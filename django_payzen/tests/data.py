@@ -1,5 +1,12 @@
 import collections
+import random
 
+
+def get_vads_trans_id():
+    vads_trans_id = ""
+    for i in range(0, 6):
+        vads_trans_id += str(random.randint(0, 9))
+    return vads_trans_id
 
 base_url = "http://www.if-then-else.fr/"
 
@@ -24,7 +31,7 @@ payment_config_args = {
 
 customized_payment_args = {
     # Base fields
-    "vads_amount": 1000,
+    "vads_amount": 10000,
     "vads_capture_delay": 2,
     "vads_payment_cards": "CB;Visa",
     "vads_return_mode": "POST",
@@ -35,6 +42,7 @@ customized_payment_args = {
     "vads_url_cancel": base_url+"cancel/",
     "vads_url_error": base_url+"error/",
     "vads_url_return": base_url+"return/",
+    "vads_trans_id": get_vads_trans_id(),
     "vads_user_info": "Abbath Doom Occulta",
     "vads_shop_name": "Immortal",
     "vads_redirect_success_timeout": 5,
@@ -44,7 +52,7 @@ customized_payment_args = {
     # customer fields
     "vads_cust_address": "Oeschstr.",
     "vads_cust_address_number": "9",
-    "vads_cust_country": "Germany",
+    "vads_cust_country": "GE",
     "vads_cust_email": "test@nuclearblast.de",
     "vads_cust_id": "1",
     "vads_cust_name": "NUCLEAR BLAST",
@@ -54,12 +62,11 @@ customized_payment_args = {
     "vads_cust_phone": "+49 7162 9280 26",
     "vads_cust_title": "Guitarist",
     "vads_cust_city": "Donzdorf",
-    "vads_cust_status": "Confirmed",
     "vads_cust_state": "Donzdorf",
     "vads_cust_zip": "73072",
     "vads_language": "GE",
     # order fields
-    "vads_order_id": "#123",
+    "vads_order_id": "1234567890",
     "vads_order_info": "Order test info 1",
     "vads_order_info2": "Order test info 2",
     "vads_order_info3": "Order test info 3",

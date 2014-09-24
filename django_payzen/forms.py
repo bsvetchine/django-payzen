@@ -25,3 +25,10 @@ class PaymentRequestForm(forms.ModelForm):
         super(PaymentRequestForm, self).__init__(*args, **kwargs)
         self.__remove_empty_fields()
         self.__set_all_fields_hidden()
+
+
+class PaymentResponseForm(forms.ModelForm):
+
+    class Meta:
+        model = models.PaymentResponse
+        exclude = []

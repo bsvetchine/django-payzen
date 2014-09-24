@@ -14,6 +14,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from . import app_settings
 from . import tools
+from . import constants
 
 
 @python_2_unicode_compatible
@@ -177,74 +178,18 @@ class ShippingDetails(models.Model):
         abstract = True
 
 
-class PaymentRequest(CustomerDetails, OrderDetails, ShippingDetails):
-    """Model that contains all Payzen parameters to initiate a payment.
+class RequestDetails(models.Model):
+    """Abstract model that contains all data relative to transaction."""
 
-    The first 7 fields are mandatory, all others are optional.
-    """
-
-    VADS_ACTION_MODE_CHOICES = (
-        ('INTERACTIVE', 'INTERACTIVE'),
-        ('SILENT', 'SILENT'),
-    )
-
-    VADS_CURRENCY_CHOICES = (
-        ('036', 'Australian dollar'),
-        ('124', 'Canadian dollar'),
-        ('156', 'Chinese Yuan'),
-        ('208', 'Danish Krone'),
-        ('392', 'Japanese Yen'),
-        ('578', 'Norwegian Krone'),
-        ('752', 'Swedish Krona'),
-        ('756', 'Swiss franc'),
-        ('826', 'Pound sterling'),
-        ('840', 'American dollar'),
-        ('953', 'Franc Pacifique (CFP)'),
-        ('978', 'Euro')
-    )
-
-    VADS_CTX_MODE_CHOICES = (
-        ('TEST', 'TEST'),
-        ('PRODUCTION', 'PRODUCTION')
-    )
-
-    VADS_RETURN_MODE_CHOICES = (
-        ('AMEX', 'American Express'),
-        ('AURORE-MULTI', 'AURORE (multi brand)'),
-        ('BUYSTER', 'BUYSTER'),
-        ('CB', 'CB'),
-        ('COFINOGA', 'COFINOGA'),
-        ('E-CARTEBLEUE', 'e blue card'),
-        ('MASTERCARD', 'Eurocard / MasterCard'),
-        ('JCB', 'JCB'),
-        ('MAESTRO', 'Maestro'),
-        ('ONEY', 'ONEY'),
-        ('ONEY_SANDBOX', 'ONEY SANDBOX mode'),
-        ('PAYPAL', 'PAYPAL'),
-        ('PAYPAL_SB', 'PAYPAL SANDBOX mode'),
-        ('PAYSAFECARD', 'PAYSAFECARD'),
-        ('VISA', 'Visa'),
-        ('VISA_ELECTRON', 'Visa Electron'),
-        ('COF3XCB', '3x CB Cofinoga'),
-        ('COF3XCB_SB', '3x CB Cofinoga SANDBOX'),
-    )
-
-    VADS_VALIDATION_MODE_CHOICES = (
-        ('', 'Default shop configuration (using payzen admin)'),
-        ('0', 'Automatic validation'),
-        ('1', 'Manual validation')
-    )
-
-    # Mandatory fields
     vads_action_mode = models.CharField(
-        max_length=11, choices=VADS_ACTION_MODE_CHOICES,
+        max_length=11, choices=constants.VADS_ACTION_MODE_CHOICES,
         default=app_settings.VADS_ACTION_MODE)
     vads_amount = models.PositiveIntegerField()
     vads_currency = models.CharField(
-        max_length=3, choices=VADS_CURRENCY_CHOICES,
+        max_length=3, choices=constants.VADS_CURRENCY_CHOICES,
         default=app_settings.VADS_CURRENCY)
     vads_ctx_mode = models.CharField(
-        max_length=10, choices=VADS_CTX_MODE_CHOICES,
+        max_length=10, choices=constants.VADS_CTX_MODE_CHOICES,
         default=app_settings.VADS_CTX_MODE)
     vads_page_action = models.CharField(
         max_length=7, default='PAYMENT')
@@ -259,7 +204,15 @@ class PaymentRequest(CustomerDetails, OrderDetails, ShippingDetails):
         max_length=2, default='V2')
     signature = models.CharField(
         max_length=40)
-    # Optional fields
+
+    class Meta:
+        abstract = True
+
+
+class PaymentRequest(RequestDetails, CustomerDetails,
+                     OrderDetails, ShippingDetails):
+    """Model that contains all Payzen parameters to initiate a payment."""
+
     vads_capture_delay = models.PositiveIntegerField(blank=True, null=True)
     vads_contrib = models.CharField(
         max_length=255, blank=True, null=True,
@@ -267,11 +220,12 @@ class PaymentRequest(CustomerDetails, OrderDetails, ShippingDetails):
     vads_payment_cards = models.CharField(
         max_length=127, blank=True, null=True)
     vads_return_mode = models.CharField(
-        max_length=12, choices=VADS_RETURN_MODE_CHOICES, blank=True, null=True)
+        max_length=12, choices=constants.VADS_RETURN_MODE_CHOICES,
+        blank=True, null=True)
     vads_theme_config = models.CharField(
         max_length=255, blank=True, null=True)
     vads_validation_mode = models.CharField(
-        choices=VADS_VALIDATION_MODE_CHOICES,
+        choices=constants.VADS_VALIDATION_MODE_CHOICES,
         max_length=1, blank=True, null=True)
     vads_url_success = models.URLField(blank=True, null=True)
     vads_url_referral = models.URLField(blank=True, null=True)
@@ -295,6 +249,9 @@ class PaymentRequest(CustomerDetails, OrderDetails, ShippingDetails):
     payment_config = models.ForeignKey(
         MultiPaymentConfig, blank=True, null=True)
     custom_payment_config = models.ManyToManyField(CustomPaymentConfig)
+
+    class Meta:
+        verbose_name = "Request"
 
     def set_vads_payment_config(self):
         """
@@ -335,3 +292,122 @@ class PaymentRequest(CustomerDetails, OrderDetails, ShippingDetails):
         self.set_vads_payment_config()
         self.set_signature()
         self.save()
+
+
+class WarrantyDetails(models.Model):
+
+    vads_threeds_enrolled = models.CharField(
+        max_length=1, choices=constants.VADS_THREEDS_ENROLLED,
+        blank=True, null=True)
+    vads_threeds_cavv = models.CharField(max_length=28, blank=True, null=True)
+    vads_threeds_eci = models.CharField(max_length=2, blank=True, null=True)
+    vads_threeds_xid = models.CharField(max_length=28, blank=True, null=True)
+    vads_threeds_cavvAlgorithm = models.CharField(
+        choices=constants.VADS_THREEDS_CAVVALGORITHM_CHOICES,
+        max_length=1, blank=True, null=True)
+    vads_threeds_status = models.CharField(
+        choices=constants.VADS_THREEDS_STATUS_CHOICES,
+        max_length=1, blank=True, null=True)
+    vads_threeds_sign_valid = models.NullBooleanField()
+    vads_threeds_error_code = models.CharField(
+        max_length=2, blank=True, null=True)
+    vads_threeds_exit_status = models.CharField(
+        max_length=2, blank=True, null=True)
+    vads_warranty_result = models.CharField(
+        max_length=13, blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class RiskControlDetail(models.Model):
+
+    vads_extra_result = models.CharField(max_length=2, blank=True, null=True)
+    vads_card_country = models.CharField(max_length=2, blank=True, null=True)
+    vads_bank_code = models.CharField(max_length=2, blank=True, null=True)
+    vads_bank_product = models.CharField(max_length=3, blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class CustomizationDetails(models.Model):
+
+    vads_available_languages = models.TextField(blank=True, null=True)
+    vads_theme_config = models.CharField(max_length=255, blank=True, null=True)
+    vads_shop_url = models.URLField(blank=True, null=True)
+    vads_shop_name = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class PaymentResponse(WarrantyDetails, CustomerDetails,
+                      OrderDetails, ShippingDetails,
+                      CustomizationDetails):
+
+    """Model that contains the main response parameters from Payzen."""
+
+    signature = models.CharField(max_length=40)
+    vads_ctx_mode = models.CharField(
+        max_length=10, choices=constants.VADS_CTX_MODE_CHOICES)
+    vads_url_check_src = models.CharField(
+        choices=constants.VADS_URL_CHECK_SRC_CHOICES,
+        max_length=10)
+    vads_version = models.CharField(max_length=2)
+    vads_trans_date = models.CharField(max_length=14)
+    vads_action_mode = models.CharField(
+        max_length=11, choices=constants.VADS_ACTION_MODE_CHOICES)
+
+    vads_trans_id = models.CharField(
+        max_length=6, blank=True, null=True)
+    vads_payment_config = models.TextField(
+        blank=True, null=True)
+    vads_sequence_number = models.PositiveSmallIntegerField(
+        blank=True, null=True)
+    vads_site_id = models.PositiveIntegerField()
+    vads_amount = models.PositiveIntegerField(
+        blank=True, null=True)
+    vads_currency = models.CharField(
+        max_length=3, choices=constants.VADS_CURRENCY_CHOICES,
+        blank=True, null=True)
+    vads_effective_amount = models.PositiveIntegerField(
+        blank=True, null=True)
+    vads_operation_type = models.CharField(
+        max_length=6, choices=constants.VADS_OPERATION_TYPE_CHOICES,
+        blank=True, null=True)
+    vads_result = models.CharField(
+        max_length=2, choices=constants.VADS_RESULT_CHOICES)
+    vads_validation_mode = models.CharField(
+        choices=constants.VADS_VALIDATION_MODE_CHOICES,
+        max_length=1, blank=True, null=True)
+    vads_trans_status = models.CharField(
+        choices=constants.VADS_TRANS_STATUS, max_length=33)
+    vads_effective_creation_date = models.DateField(
+        blank=True, null=True)
+    vads_presentation_date = models.DateField(blank=True, null=True)
+    vads_capture_delay = models.PositiveIntegerField(blank=True, null=True)
+    vads_card_brand = models.CharField(max_length=50, blank=True, null=True)
+    vads_card_number = models.CharField(max_length=16, blank=True, null=True)
+    vads_expiry_month = models.PositiveSmallIntegerField(blank=True, null=True)
+    vads_expiry_year = models.PositiveSmallIntegerField(blank=True, null=True)
+    vads_contract_used = models.CharField(max_length=250)
+    vads_auth_number = models.CharField(max_length=6, blank=True, null=True)
+    vads_auth_result = models.CharField(max_length=2, blank=True, null=True)
+    vads_auth_mode = models.CharField(
+        max_length=4, choices=constants.VADS_AUTH_MODE_CHOICES,
+        blank=True, null=True)
+    vads_payment_certificate = models.CharField(
+        max_length=40, blank=True, null=True)
+    vads_payment_src = models.URLField()
+    vads_contrib = models.CharField(
+        max_length=255, blank=True, null=True)
+    vads_user_info = models.CharField(max_length=255, blank=True, null=True)
+    vads_ext_trans_id = models.CharField(
+        max_length=6, blank=True, null=True)
+    vads_payment_option_code = models.TextField(blank=True, null=True)
+
+    vads_change_rate = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Response"

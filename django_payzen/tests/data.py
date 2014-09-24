@@ -8,6 +8,45 @@ def get_vads_trans_id():
         vads_trans_id += str(random.randint(0, 9))
     return vads_trans_id
 
+cards = [
+    {
+        'type': 'CB',
+        'card_number': '4970100000000000',
+        'protocol': '3D-Secure',
+        'result': 'accepted'
+    },
+    {
+        'type': 'MasterCard',
+        'card_number': '5970100300000000',
+        'protocol': '3D-Secure',
+        'result': 'accepted'
+    },
+    {
+        'type': 'Maestro',
+        'card_number': '5000550000000000',
+        'protocol': '3D-Secure',
+        'result': 'accepted'
+    },
+    {
+        'type': 'CB',
+        'card_number': '4970100000000009',
+        'protocol': '3D-Secure interactive',
+        'result': 'accepted'
+    },
+    {
+        'type': 'MasterCard',
+        'card_number': '5970100300000009',
+        'protocol': '3D-Secure interactive',
+        'result': 'accepted'
+    },
+    {
+        'type': 'Maestro',
+        'card_number': '5000550000000009',
+        'protocol': '3D-Secure interactive',
+        'result': 'accepted'
+    },
+]
+
 base_url = "http://www.if-then-else.fr/"
 
 theme_args = collections.OrderedDict([

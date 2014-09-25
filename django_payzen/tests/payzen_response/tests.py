@@ -1,3 +1,5 @@
+import time
+
 from django import template
 from django.test import LiveServerTestCase
 
@@ -14,10 +16,10 @@ class PayzenResponseTester(object):
         cls.selenium = webdriver.WebDriver()
         super(PayzenResponseTester, cls).setUpClass()
 
-    # @classmethod
-    # def tearDownClass(cls):
-    #     cls.selenium.quit()
-    #     super(PayzenResponseTester, cls).tearDownClass()
+    @classmethod
+    def tearDownClass(cls):
+        cls.selenium.quit()
+        super(PayzenResponseTester, cls).tearDownClass()
 
     def generate_payment_form(self):
         t = template.Template(
@@ -49,18 +51,25 @@ class PayzenResponseTester(object):
             '//input[@name="vads_cvv"]').send_keys("123")
         self.selenium.find_element_by_id("validationButtonCard").click()
 
+    def response_object_tester(self):
+        resp = models.PaymentRequest.objects.get(
+            vads_trans_id=self.data['vads_trans_id'])
+        for field_name, value in self.data.items():
+            self.assertEqual(getattr(resp, field_name), value)
+
     def test_payzen_response(self):
         self.generate_payment_form()
         self.validate_payment_form()
         self.select_payment_card()
         self.enter_card_number()
+        time.sleep(5)
+        self.response_object_tester()
 
 
 class BasicPaymentTest(PayzenResponseTester, LiveServerTestCase):
 
     def setUp(self):
-        self.instance = models.PaymentRequest(
-            vads_trans_id=data.get_vads_trans_id(),
-            vads_amount=1000)
+        self.data = data.basic_payment_args
+        self.instance = models.PaymentRequest(**self.data)
         self.instance.save()
         self.card = data.cards[0]

@@ -12,38 +12,164 @@ cards = [
     {
         'type': 'CB',
         'card_number': '4970100000000000',
-        'protocol': '3D-Secure',
+        'behaviour': '3D-Secure',
         'result': 'accepted'
     },
     {
         'type': 'MasterCard',
         'card_number': '5970100300000000',
-        'protocol': '3D-Secure',
+        'behaviour': '3D-Secure',
         'result': 'accepted'
     },
     {
         'type': 'Maestro',
         'card_number': '5000550000000000',
-        'protocol': '3D-Secure',
+        'behaviour': '3D-Secure',
         'result': 'accepted'
     },
     {
         'type': 'CB',
         'card_number': '4970100000000009',
-        'protocol': '3D-Secure interactive',
+        'behaviour': '3D-Secure interactive',
         'result': 'accepted'
     },
     {
         'type': 'MasterCard',
         'card_number': '5970100300000009',
-        'protocol': '3D-Secure interactive',
+        'behaviour': '3D-Secure interactive',
         'result': 'accepted'
     },
     {
         'type': 'Maestro',
         'card_number': '5000550000000009',
-        'protocol': '3D-Secure interactive',
+        'behaviour': '3D-Secure interactive',
         'result': 'accepted'
+    },
+    {
+        'type': 'CB',
+        'card_number': '4970100000000003',
+        'behaviour': 'Merchant without 3D-secure',
+        'result': 'accepted'
+    },
+    {
+        'type': 'MasterCard',
+        'card_number': '5970100300000003',
+        'behaviour': 'Merchant without 3D-secure',
+        'result': 'accepted'
+    },
+    {
+        'type': 'Maestro',
+        'card_number': '5000550000000003',
+        'behaviour': 'Merchant without 3D-secure',
+        'result': 'accepted'
+    },
+    {
+        'type': 'CB',
+        'card_number': '4970100000000001',
+        'behaviour': 'Buyer without 3D-secure',
+        'result': 'accepted'
+    },
+    {
+        'type': 'MasterCard',
+        'card_number': '5970100300000001',
+        'behaviour': 'Buyer without 3D-secure',
+        'result': 'accepted'
+    },
+    {
+        'type': 'Maestro',
+        'card_number': '5000550000000001',
+        'behaviour': 'Buyer without 3D-secure',
+        'result': 'accepted'
+    },
+    {
+        'type': 'CB',
+        'card_number': '4970100000000002',
+        'behaviour': 'Transaction to force',
+        'result': 'rejected'
+    },
+    {
+        'type': 'MasterCard',
+        'card_number': '5970100300000002',
+        'behaviour': 'Transaction to force',
+        'result': 'rejected'
+    },
+    {
+        'type': 'Maestro',
+        'card_number': '5000550000000002',
+        'behaviour': 'Transaction to force',
+        'result': 'rejected'
+    },
+    {
+        'type': 'CB',
+        'card_number': '4970100000000007',
+        'behaviour': 'Warranty = NO',
+        'result': 'accepted'
+    },
+    {
+        'type': 'MasterCard',
+        'card_number': '5970100300023006',
+        'behaviour': 'Warranty = NO',
+        'result': 'accepted'
+    },
+    {
+        'type': 'Maestro',
+        'card_number': '5000550000023006',
+        'behaviour': 'Warranty = NO',
+        'result': 'accepted'
+    },
+    {
+        'type': 'CB',
+        'card_number': '4970100000000097',
+        'behaviour': '3-D Secure authentication failed',
+        'result': 'rejected'
+    },
+    {
+        'type': 'MasterCard',
+        'card_number': '5970100300000097',
+        'behaviour': '3-D Secure authentication failed',
+        'result': 'rejected'
+    },
+    {
+        'type': 'Maestro',
+        'card_number': '5000550000000097',
+        'behaviour': '3-D Secure authentication failed',
+        'result': 'rejected'
+    },
+    {
+        'type': 'CB',
+        'card_number': '4970100000000098',
+        'behaviour': 'Card payment limit exceeded',
+        'result': 'rejected'
+    },
+    {
+        'type': 'MasterCard',
+        'card_number': '5970100300000098',
+        'behaviour': 'Card payment limit exceeded',
+        'result': 'rejected'
+    },
+    {
+        'type': 'Maestro',
+        'card_number': '5000550000000098',
+        'behaviour': 'Card payment limit exceeded',
+        'result': 'rejected'
+    },
+    {
+        'type': 'CB',
+        'card_number': '4970100000000099',
+        'behaviour': 'Wrong cryptogram',
+        'result': 'rejected'
+    },
+    {
+        'type': 'MasterCard',
+        'card_number': '5970100300000099',
+        'behaviour': 'Wrong cryptogram',
+        'result': 'rejected'
+    },
+    {
+        'type': 'Maestro',
+        'card_number': '5000550000000099',
+        'behaviour': 'Wrong cryptogram',
+        'result': 'rejected'
     },
 ]
 
@@ -66,6 +192,11 @@ payment_config_args = {
     "first": 5000,
     "count": 2,
     "period": 5
+}
+
+basic_payment_args = {
+    "vads_trans_id": get_vads_trans_id(),
+    "vads_amount": 1000,
 }
 
 customized_payment_args = {

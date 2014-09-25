@@ -383,9 +383,10 @@ class PaymentResponse(WarrantyDetails, CustomerDetails,
         max_length=1, blank=True, null=True)
     vads_trans_status = models.CharField(
         choices=constants.VADS_TRANS_STATUS, max_length=33)
-    vads_effective_creation_date = models.DateField(
-        blank=True, null=True)
-    vads_presentation_date = models.DateField(blank=True, null=True)
+    vads_effective_creation_date = models.CharField(
+        max_length=14, blank=True, null=True)
+    vads_presentation_date = models.CharField(
+        max_length=14, blank=True, null=True)
     vads_capture_delay = models.PositiveIntegerField(blank=True, null=True)
     vads_card_brand = models.CharField(max_length=50, blank=True, null=True)
     vads_card_number = models.CharField(max_length=16, blank=True, null=True)
@@ -399,7 +400,9 @@ class PaymentResponse(WarrantyDetails, CustomerDetails,
         blank=True, null=True)
     vads_payment_certificate = models.CharField(
         max_length=40, blank=True, null=True)
-    vads_payment_src = models.URLField()
+    vads_payment_src = models.CharField(
+        max_length=5, blank=True, null=True,
+        choices=constants.VADS_PAYMENT_SRC_CHOICES)
     vads_contrib = models.CharField(
         max_length=255, blank=True, null=True)
     vads_user_info = models.CharField(max_length=255, blank=True, null=True)
@@ -411,3 +414,9 @@ class PaymentResponse(WarrantyDetails, CustomerDetails,
 
     class Meta:
         verbose_name = "Response"
+
+    @property
+    def payment_successful(self):
+        if self.vads_result == '00':
+            return True
+        return False

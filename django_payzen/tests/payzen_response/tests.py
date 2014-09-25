@@ -7,6 +7,7 @@ from .. import data
 from ... import models
 
 from selenium.webdriver.firefox import webdriver
+from selenium.common import exceptions
 
 
 class PayzenResponseTester(object):
@@ -52,17 +53,26 @@ class PayzenResponseTester(object):
         self.selenium.find_element_by_id("validationButtonCard").click()
 
     def response_object_tester(self):
-        resp = models.PaymentRequest.objects.get(
+        resp = models.PaymentResponse.objects.get(
             vads_trans_id=self.data['vads_trans_id'])
         for field_name, value in self.data.items():
-            self.assertEqual(getattr(resp, field_name), value)
+            if hasattr(resp, field_name):
+                self.assertEqual(str(getattr(resp, field_name)), value)
+        if self.card['result'] == 'accepted':
+            self.assertTrue(resp.payment_successful)
+        else:
+            self.assertFalse(resp.payment_successful)
 
     def test_payzen_response(self):
         self.generate_payment_form()
         self.validate_payment_form()
-        self.select_payment_card()
+        try:
+            self.select_payment_card()
+        except exceptions.NoSuchElementException:
+            # For a recurring payment, there is no card selection step
+            pass
         self.enter_card_number()
-        time.sleep(5)
+        time.sleep(10)  # Wait for confirmation request from Payzen
         self.response_object_tester()
 
 
@@ -72,4 +82,21 @@ class BasicPaymentTest(PayzenResponseTester, LiveServerTestCase):
         self.data = data.basic_payment_args
         self.instance = models.PaymentRequest(**self.data)
         self.instance.save()
+        self.card = data.cards[0]
+
+
+class CustomizedPaymentTest(PayzenResponseTester, LiveServerTestCase):
+
+    def setUp(self):
+        self.data = data.customized_payment_args
+        self.instance = models.PaymentRequest(
+            **self.data)
+        self.instance.theme = models.ThemeConfig(
+            **data.theme_args)
+        self.instance.theme.save()
+        self.instance.payment_config = models.MultiPaymentConfig(
+            **data.payment_config_args)
+        self.instance.payment_config.save()
+        self.instance.save()
+        self.css_class_to_find = "echeancier"
         self.card = data.cards[0]

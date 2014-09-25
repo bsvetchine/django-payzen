@@ -201,11 +201,11 @@ basic_payment_args = {
 
 customized_payment_args = {
     # Base fields
-    "vads_amount": 10000,
-    "vads_capture_delay": 2,
+    "vads_amount": "10000",
+    "vads_capture_delay": "2",
     "vads_payment_cards": "CB;Visa",
     "vads_return_mode": "POST",
-    "vads_validation_mode": 1,
+    "vads_validation_mode": "1",
     "vads_url_success": base_url+"success/",
     "vads_url_referral": base_url+"referral/",
     "vads_url_refused": base_url+"refused/",
@@ -215,9 +215,9 @@ customized_payment_args = {
     "vads_trans_id": get_vads_trans_id(),
     "vads_user_info": "Abbath Doom Occulta",
     "vads_shop_name": "Immortal",
-    "vads_redirect_success_timeout": 5,
+    "vads_redirect_success_timeout": "5",
     "vads_redirect_success_message": "Tragedies Blows At Horizon",
-    "vads_redirect_error_timeout": 5,
+    "vads_redirect_error_timeout": "5",
     "vads_redirect_error_message": "At The Heart Of Winter",
     # customer fields
     "vads_cust_address": "Oeschstr.",
@@ -226,15 +226,13 @@ customized_payment_args = {
     "vads_cust_email": "test@nuclearblast.de",
     "vads_cust_id": "1",
     "vads_cust_name": "NUCLEAR BLAST",
-    "vads_cust_last_name": "Abbath",
-    "vads_cust_first_name": "Doom Occulta",
     "vads_cust_cell_phone": "+49 7162 9280-0",
     "vads_cust_phone": "+49 7162 9280 26",
     "vads_cust_title": "Guitarist",
     "vads_cust_city": "Donzdorf",
     "vads_cust_state": "Donzdorf",
     "vads_cust_zip": "73072",
-    "vads_language": "GE",
+    "vads_language": "fr",
     # order fields
     "vads_order_id": "1234567890",
     "vads_order_info": "Order test info 1",
@@ -242,8 +240,6 @@ customized_payment_args = {
     "vads_order_info3": "Order test info 3",
     # shipping fields
     "vads_ship_to_name": "NUCLEAR BLAST",
-    "vads_ship_to_first_name": "Doom Occulta",
-    "vads_ship_to_last_name": "Abbath",
     "vads_ship_to_street_number": "9",
     "vads_ship_to_street": "Oeschstr. 9",
     "vads_ship_to_street2": "...",

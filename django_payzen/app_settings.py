@@ -9,7 +9,7 @@ from django.conf import settings
 
 
 PAYZEN_REQUEST_URL = 'https://secure.payzen.eu/vads-payment/'
-VADS_CONTRIB = 'django-payzen v1.0'
+VADS_CONTRIB = 'django-payzen v0.9'
 VADS_SITE_ID = getattr(settings, 'VADS_SITE_ID', None)
 CLIENT_CERTIFICATE = getattr(settings, 'VADS_CERTIFICATE', None)
 VADS_CURRENCY = getattr(settings, 'VADS_CURRENCY', None)

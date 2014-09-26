@@ -78,5 +78,5 @@ def get_signature(payment_request):
     base_str = ''
     for key in sorted(vads_args):
         base_str += str(vads_args[key]) + '+'
-    base_str += app_settings.CLIENT_CERTIFICATE
+    base_str += app_settings.VADS_CERTIFICATE
     return hashlib.sha1(base_str).hexdigest()

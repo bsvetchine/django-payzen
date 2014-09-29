@@ -196,7 +196,7 @@ payment_config_args = {
 
 basic_payment_args = {
     "vads_trans_id": get_vads_trans_id(),
-    "vads_amount": 1000,
+    "vads_amount": "1000",
 }
 
 customized_payment_args = {

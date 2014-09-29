@@ -64,6 +64,8 @@ class PayzenResponseTester(object):
             self.assertFalse(resp.payment_successful)
 
     def test_payzen_response(self):
+        self.assertFalse(
+            self.instance.payment_successful)
         self.generate_payment_form()
         self.validate_payment_form()
         try:
@@ -74,6 +76,8 @@ class PayzenResponseTester(object):
         self.enter_card_number()
         time.sleep(10)  # Wait for confirmation request from Payzen
         self.response_object_tester()
+        self.assertTrue(
+            self.instance.payment_successful)
 
 
 class BasicPaymentTest(PayzenResponseTester, LiveServerTestCase):

@@ -209,91 +209,6 @@ class RequestDetails(models.Model):
         abstract = True
 
 
-class PaymentRequest(RequestDetails, CustomerDetails,
-                     OrderDetails, ShippingDetails):
-    """Model that contains all Payzen parameters to initiate a payment."""
-
-    vads_capture_delay = models.PositiveIntegerField(blank=True, null=True)
-    vads_contrib = models.CharField(
-        max_length=255, blank=True, null=True,
-        default=app_settings.VADS_CONTRIB)
-    vads_payment_cards = models.CharField(
-        max_length=127, blank=True, null=True)
-    vads_return_mode = models.CharField(
-        max_length=12, choices=constants.VADS_RETURN_MODE_CHOICES,
-        blank=True, null=True)
-    vads_theme_config = models.CharField(
-        max_length=255, blank=True, null=True)
-    vads_validation_mode = models.CharField(
-        choices=constants.VADS_VALIDATION_MODE_CHOICES,
-        max_length=1, blank=True, null=True)
-    vads_url_success = models.URLField(blank=True, null=True)
-    vads_url_referral = models.URLField(blank=True, null=True)
-    vads_url_refused = models.URLField(blank=True, null=True)
-    vads_url_cancel = models.URLField(blank=True, null=True)
-    vads_url_error = models.URLField(blank=True, null=True)
-    vads_url_return = models.URLField(blank=True, null=True)
-    vads_user_info = models.CharField(max_length=255, blank=True, null=True)
-    vads_shop_name = models.CharField(max_length=255, blank=True, null=True)
-    vads_redirect_success_timeout = models.PositiveIntegerField(
-        blank=True, null=True)
-    vads_redirect_success_message = models.CharField(
-        max_length=255, blank=True, null=True)
-    vads_redirect_error_timeout = models.PositiveIntegerField(
-        blank=True, null=True)
-    vads_redirect_error_message = models.CharField(
-        max_length=255, blank=True, null=True)
-
-    # Relations
-    theme = models.ForeignKey(ThemeConfig, blank=True, null=True)
-    payment_config = models.ForeignKey(
-        MultiPaymentConfig, blank=True, null=True)
-    custom_payment_config = models.ManyToManyField(CustomPaymentConfig)
-
-    class Meta:
-        verbose_name = "Request"
-
-    def set_vads_payment_config(self):
-        """
-        vads_payment_config can be set only after object saving.
-
-        A custom payment config can be set once PaymentRequest saved
-        (adding elements to the m2m relationship). As a consequence
-        we set vads_payment_config just before sending data elements
-        to payzen."""
-        self.vads_payment_config = tools.get_vads_payment_config(
-            self.payment_config, self.custom_payment_config.all())
-
-    def set_signature(self):
-        self.signature = tools.get_signature(self)
-
-    def save(self):
-        """
-        We set up vads_trans_id and theme according to payzen format.
-
-        If fields values are explicitely set by user, we do not override
-        their values.
-        """
-        if not self.vads_trans_id:
-            self.vads_trans_id = tools.get_vads_trans_id(
-                self.vads_site_id, self.vads_trans_date)
-        if self.theme and not self.vads_theme_config:
-            self.vads_theme_config = str(self.theme)
-        if not self.pk:
-            super(PaymentRequest, self).save()
-        self.set_vads_payment_config()
-        self.set_signature()
-        super(PaymentRequest, self).save()
-
-    def update(self):
-        if not self.pk:
-            # Prevent bug on filtering m2m relationship
-            self.save()
-        self.set_vads_payment_config()
-        self.set_signature()
-        self.save()
-
-
 class WarrantyDetails(models.Model):
 
     vads_threeds_enrolled = models.CharField(
@@ -359,8 +274,7 @@ class PaymentResponse(WarrantyDetails, CustomerDetails,
     vads_action_mode = models.CharField(
         max_length=11, choices=constants.VADS_ACTION_MODE_CHOICES)
 
-    vads_trans_id = models.CharField(
-        max_length=6, blank=True, null=True)
+    vads_trans_id = models.CharField(max_length=6)
     vads_payment_config = models.TextField(
         blank=True, null=True)
     vads_sequence_number = models.PositiveSmallIntegerField(
@@ -414,9 +328,110 @@ class PaymentResponse(WarrantyDetails, CustomerDetails,
 
     class Meta:
         verbose_name = "Response"
+        unique_together = ("vads_trans_id", "vads_site_id", "vads_trans_date")
 
     @property
     def payment_successful(self):
         if self.vads_result == '00':
             return True
         return False
+
+
+class PaymentRequest(RequestDetails, CustomerDetails,
+                     OrderDetails, ShippingDetails):
+    """Model that contains all Payzen parameters to initiate a payment."""
+
+    vads_capture_delay = models.PositiveIntegerField(blank=True, null=True)
+    vads_contrib = models.CharField(
+        max_length=255, blank=True, null=True,
+        default=app_settings.VADS_CONTRIB)
+    vads_payment_cards = models.CharField(
+        max_length=127, blank=True, null=True)
+    vads_return_mode = models.CharField(
+        max_length=12, choices=constants.VADS_RETURN_MODE_CHOICES,
+        blank=True, null=True)
+    vads_theme_config = models.CharField(
+        max_length=255, blank=True, null=True)
+    vads_validation_mode = models.CharField(
+        choices=constants.VADS_VALIDATION_MODE_CHOICES,
+        max_length=1, blank=True, null=True)
+    vads_url_success = models.URLField(blank=True, null=True)
+    vads_url_referral = models.URLField(blank=True, null=True)
+    vads_url_refused = models.URLField(blank=True, null=True)
+    vads_url_cancel = models.URLField(blank=True, null=True)
+    vads_url_error = models.URLField(blank=True, null=True)
+    vads_url_return = models.URLField(blank=True, null=True)
+    vads_user_info = models.CharField(max_length=255, blank=True, null=True)
+    vads_shop_name = models.CharField(max_length=255, blank=True, null=True)
+    vads_redirect_success_timeout = models.PositiveIntegerField(
+        blank=True, null=True)
+    vads_redirect_success_message = models.CharField(
+        max_length=255, blank=True, null=True)
+    vads_redirect_error_timeout = models.PositiveIntegerField(
+        blank=True, null=True)
+    vads_redirect_error_message = models.CharField(
+        max_length=255, blank=True, null=True)
+
+    # Relations
+    theme = models.ForeignKey(ThemeConfig, blank=True, null=True)
+    payment_config = models.ForeignKey(
+        MultiPaymentConfig, blank=True, null=True)
+    custom_payment_config = models.ManyToManyField(CustomPaymentConfig)
+
+    class Meta:
+        verbose_name = "Request"
+        unique_together = ("vads_trans_id", "vads_site_id", "vads_trans_date")
+
+    def set_vads_payment_config(self):
+        """
+        vads_payment_config can be set only after object saving.
+
+        A custom payment config can be set once PaymentRequest saved
+        (adding elements to the m2m relationship). As a consequence
+        we set vads_payment_config just before sending data elements
+        to payzen."""
+        self.vads_payment_config = tools.get_vads_payment_config(
+            self.payment_config, self.custom_payment_config.all())
+
+    def set_signature(self):
+        self.signature = tools.get_signature(self)
+
+    @property
+    def response(self):
+        try:
+            return PaymentResponse.objects.get(
+                vads_trans_id=self.vads_trans_id,
+                vads_trans_date=self.vads_trans_date,
+                vads_site_id=self.vads_site_id)
+        except PaymentResponse.DoesNotExist:
+            return PaymentResponse.objects.none()
+
+    @property
+    def payment_successful(self):
+        return self.response and self.response.payment_successful
+
+    def save(self):
+        """
+        We set up vads_trans_id and theme according to payzen format.
+
+        If fields values are explicitely set by user, we do not override
+        their values.
+        """
+        if not self.vads_trans_id:
+            self.vads_trans_id = tools.get_vads_trans_id(
+                self.vads_site_id, self.vads_trans_date)
+        if self.theme and not self.vads_theme_config:
+            self.vads_theme_config = str(self.theme)
+        if not self.pk:
+            super(PaymentRequest, self).save()
+        self.set_vads_payment_config()
+        self.set_signature()
+        super(PaymentRequest, self).save()
+
+    def update(self):
+        if not self.pk:
+            # Prevent bug on filtering m2m relationship
+            self.save()
+        self.set_vads_payment_config()
+        self.set_signature()
+        self.save()

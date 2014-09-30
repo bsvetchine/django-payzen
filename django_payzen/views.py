@@ -32,9 +32,7 @@ class ResponseView(generic.View):
                 signal = signals.payment_success
             else:
                 signal = signals.payment_failure
-            signal.send(
-                sender=self.__class__,
-                response=response)
+            signal.send(sender=self.__class__, response=response)
         else:
             logger.error("Django-Payzen : Response could not be saved - {}"
                          .format(form.errors))

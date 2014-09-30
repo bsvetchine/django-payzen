@@ -9,12 +9,16 @@ TODO add validators to manage payzen contraints on special fields.
 
 import datetime
 
+from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
 from . import app_settings
 from . import tools
 from . import constants
+
+
+auth_user_model = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 
 @python_2_unicode_compatible
@@ -336,10 +340,26 @@ class PaymentResponse(WarrantyDetails, CustomerDetails,
             return True
         return False
 
+    @property
+    def request(self):
+        return PaymentRequest.objects.get(
+            vads_trans_id=self.vads_trans_id,
+            vads_trans_date=self.vads_trans_date,
+            vads_site_id=self.vads_site_id)
+
+    @property
+    def user(self):
+        try:
+            return self.request.user
+        except AttributeError:
+            return None
+
 
 class PaymentRequest(RequestDetails, CustomerDetails,
                      OrderDetails, ShippingDetails):
     """Model that contains all Payzen parameters to initiate a payment."""
+
+    user = models.ForeignKey(auth_user_model, blank=True, null=True)
 
     vads_capture_delay = models.PositiveIntegerField(blank=True, null=True)
     vads_contrib = models.CharField(

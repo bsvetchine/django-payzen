@@ -1,12 +1,5 @@
 import collections
-import random
 
-
-def get_vads_trans_id():
-    vads_trans_id = ""
-    for i in range(0, 6):
-        vads_trans_id += str(random.randint(0, 9))
-    return vads_trans_id
 
 cards = [
     {
@@ -195,7 +188,6 @@ payment_config_args = {
 }
 
 basic_payment_args = {
-    "vads_trans_id": get_vads_trans_id(),
     "vads_amount": "1000",
 }
 
@@ -212,7 +204,6 @@ customized_payment_args = {
     "vads_url_cancel": base_url+"cancel/",
     "vads_url_error": base_url+"error/",
     "vads_url_return": base_url+"return/",
-    "vads_trans_id": get_vads_trans_id(),
     "vads_user_info": "Abbath Doom Occulta",
     "vads_shop_name": "Immortal",
     "vads_redirect_success_timeout": "5",

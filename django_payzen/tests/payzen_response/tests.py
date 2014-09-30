@@ -54,7 +54,7 @@ class PayzenResponseTester(object):
 
     def response_object_tester(self):
         resp = models.PaymentResponse.objects.get(
-            vads_trans_id=self.data['vads_trans_id'])
+            vads_trans_id=self.instance.vads_trans_id)
         for field_name, value in self.data.items():
             if hasattr(resp, field_name):
                 self.assertEqual(str(getattr(resp, field_name)), value)

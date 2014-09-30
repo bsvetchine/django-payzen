@@ -51,7 +51,6 @@ class BasicPaymentTest(PaymentInitTester, LiveServerTestCase):
 
     def setUp(self):
         self.instance = models.PaymentRequest(
-            vads_trans_id=data.get_vads_trans_id(),
             vads_amount=1000)
         self.instance.save()
         self.css_class_to_find = "choiceMessageLabel"

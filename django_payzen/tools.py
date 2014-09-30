@@ -1,4 +1,5 @@
 import hashlib
+import random
 
 from . import app_settings
 
@@ -12,17 +13,11 @@ def get_vads_trans_id(vads_site_id, vads_trans_date):
     between vads_site_id and vads_trans_date (the first 8 characters
     representing the transaction date).
 
-    This function returns '000001' for the first transaction of
-    the day, and then increments it."""
-
-    from . import models  # Avoid circular imports
-
-    counter = models.PaymentRequest.objects.filter(
-        vads_site_id=vads_site_id,
-        vads_trans_date__startswith=vads_trans_date[:8]).count()
-    vads_trans_id = str(counter+1)
-    while len(vads_trans_id) < 6:
-        vads_trans_id = '0' + vads_trans_id
+    We consider the probability of having 2 identical
+    generated vads_trans_id in the same day as null."""
+    vads_trans_id = ""
+    for i in range(0, 6):
+        vads_trans_id += str(random.randint(0, 9))
     return vads_trans_id
 
 

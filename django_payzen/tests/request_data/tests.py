@@ -47,11 +47,6 @@ class RequestDataTester(object):
             self.instance.signature and len(self.instance.signature) == 40
         )
 
-    def test_vads_trans_id(self):
-        self.assertEqual(
-            self.expected_values['vads_trans_id'],
-            self.instance.vads_trans_id)
-
 
 class BasicPaymentTest(RequestDataTester, TestCase):
 

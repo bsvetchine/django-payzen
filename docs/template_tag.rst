@@ -1,5 +1,5 @@
-payzen_form tag
-===============
+template_tag
+============
 
 Once you have a PaymentRequest object, you can proceed with the payment following theses steps :
 

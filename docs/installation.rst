@@ -8,8 +8,13 @@ Installation
     pip install https://github.com/bsvetchine/django-payzen/archive/master.zip
 
 
-2. Configure django-payzen settings :doc:`/settings`.
+2. Add django_payzen in your INSTALLED_APPS
 
+Edit your django settings.py and add django_payzen in your INSTALLED_APPS.
+
+2. Configure your :doc:`django-payzen settings /settings`.
+
+In your settings.py file, add the settings specific to django-payzen.
 
 3. Include "django_payzen.urls" in your urls.py
 

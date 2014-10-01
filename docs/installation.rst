@@ -12,7 +12,7 @@ Installation
 
 Edit your django settings.py and add django_payzen in your INSTALLED_APPS.
 
-2. Configure your :doc:`django-payzen settings /settings`.
+2. Configure your :doc:`django-payzen settings </settings>` .
 
 In your settings.py file, add the settings specific to django-payzen.
 

@@ -11,7 +11,7 @@ Testing
 
 If you want to test django-payzen locally and you don't have a public IP you need to expose your localhost over internet to be able to received the payzen payment response request.
 
-You can use a tool like ngrok https://ngrok.com/ . Ngrok will give you a public url from wich you can access to your localhost server.
+You can use a tool like `ngrok <https://ngrok.com/>`_ . Ngrok will give you a public url from wich you can access to your localhost server.
 
 Then you need either to edit your serveur notifications urls or to specify explicitely the notification url in your payment request (recommended).
 

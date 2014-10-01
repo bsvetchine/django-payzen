@@ -6,7 +6,7 @@ Settings
 ``VADS_SITE_ID``
 ----------------
 
-Mandatory setting : your payzen client ID. You will find it in `your payzen dashboard <https://secure.payzen.eu/vads-merchant/>`.
+Mandatory setting : your payzen client ID. You will find it in `your payzen dashboard <https://secure.payzen.eu/vads-merchant/>`_.
 
 .. _settings_vads_certificate
 
@@ -20,7 +20,7 @@ Mandatory setting : the payzen certificate to use. You can generate a certificat
 ``VADS_CTX_MODE``
 -----------------
 
-Mandatory setting : 'TEST' or 'PRODUCTION'. Remark : be careful to set the vads_certificate value according to the VADS_CTX_MODE.
+Mandatory setting : 'TEST' or 'PRODUCTION'. Remark : be careful to set the VADS_CERTIFICATE value accordingly to the VADS_CTX_MODE.
 
 .. _settings_vads_currency
 

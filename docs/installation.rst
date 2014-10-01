@@ -8,7 +8,8 @@ Installation
     pip install https://github.com/bsvetchine/django-payzen/archive/master.zip
 
 
-2. Configure django-payzen settings.
+2. Configure django-payzen settings :doc:`/settings`.
+
 
 3. Include "django_payzen.urls" in your urls.py
 

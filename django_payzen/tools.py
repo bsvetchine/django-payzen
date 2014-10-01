@@ -8,7 +8,7 @@ def get_vads_trans_id(vads_site_id, vads_trans_date):
     """
     Returns a default value for vads_trans_id field.
 
-    vads_trans_id field is mandatory. It is composed by 6 alphanumeric
+    vads_trans_id field is mandatory. It is composed by 6 numeric
     characters that identifies the transaction. There is a unicity contraint
     between vads_site_id and vads_trans_date (the first 8 characters
     representing the transaction date).

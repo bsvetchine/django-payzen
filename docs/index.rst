@@ -9,4 +9,7 @@ Contents:
 
     installation
     settings
+    payment_request
+    payment_tag
+    signals
     testing

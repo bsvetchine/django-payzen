@@ -10,6 +10,6 @@ Contents:
     installation
     settings
     payment_request
-    payment_tag
+    template_tag
     signals
     testing

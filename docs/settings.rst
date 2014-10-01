@@ -6,7 +6,7 @@ Settings
 ``VADS_SITE_ID``
 ----------------
 
-Mandatory setting : your payzen client ID. You will find it in `your payzen dashboard <https://secure.payzen.eu/vads-merchant/>`_.
+Mandatory setting : your payzen client ID. You will find it in `your payzen dashboard <https://secure.payzen.eu/vads-merchant/>`_ .
 
 .. _settings_vads_certificate
 

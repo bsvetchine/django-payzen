@@ -202,9 +202,7 @@ class RequestDetails(models.Model):
     vads_site_id = models.PositiveIntegerField(
         default=app_settings.VADS_SITE_ID)
     vads_trans_date = models.CharField(
-        max_length=14,
-        default=datetime.datetime.utcnow().replace(
-            tzinfo=utc).strftime("%Y%m%d%H%M%S"))
+        max_length=14)
     vads_trans_id = models.CharField(max_length=6)
     vads_version = models.CharField(
         max_length=2, default='V2')
@@ -439,6 +437,9 @@ class PaymentRequest(RequestDetails, CustomerDetails,
         If fields values are explicitely set by user, we do not override
         their values.
         """
+        if not self.vads_trans_date:
+            self.vads_trans_date = datetime.datetime.utcnow().replace(
+                tzinfo=utc).strftime("%Y%m%d%H%M%S")
         if not self.vads_trans_id:
             self.vads_trans_id = tools.get_vads_trans_id(
                 self.vads_site_id, self.vads_trans_date)
@@ -454,6 +455,9 @@ class PaymentRequest(RequestDetails, CustomerDetails,
         if not self.pk:
             # Prevent bug on filtering m2m relationship
             self.save()
+        if not self.vads_trans_date:
+            self.vads_trans_date = datetime.datetime.utcnow().replace(
+                tzinfo=utc).strftime("%Y%m%d%H%M%S")
         self.set_vads_payment_config()
         self.set_signature()
         self.save()

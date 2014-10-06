@@ -12,6 +12,7 @@ import datetime
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.timezone import utc
 
 from . import app_settings
 from . import tools
@@ -202,7 +203,8 @@ class RequestDetails(models.Model):
         default=app_settings.VADS_SITE_ID)
     vads_trans_date = models.CharField(
         max_length=14,
-        default=datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S"))
+        default=datetime.datetime.utcnow().replace(
+            tzinfo=utc).strftime("%Y%m%d%H%M%S"))
     vads_trans_id = models.CharField(max_length=6)
     vads_version = models.CharField(
         max_length=2, default='V2')

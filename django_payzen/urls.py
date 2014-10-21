@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = patterns(
     "",
-    url(r"^response/$", views.ResponseView.as_view(), name="response"),
+    url(r"^response/$", views.ResponseView.as_view(),
+        name="django_payzen_response"),
 )

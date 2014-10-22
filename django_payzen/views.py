@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from . import forms
 from . import signals
+from . import tools
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +17,12 @@ class ResponseView(generic.View):
 
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
+        # We check if the signature is valid. If not return
+        if not tools.is_signature_valid(request.POST):
+            logger.warning(
+                "Django-Payzen : Response signature detected as invalid")
+            return http.HttpResponse()
+        # Payzen data is checked and valid
         filtered_data = {}
         for key, value in request.POST.items():
             if value:

@@ -23,14 +23,7 @@ class ResponseView(generic.View):
                 "Django-Payzen : Response signature detected as invalid")
             return http.HttpResponse()
         # Payzen data is checked and valid
-        filtered_data = {}
-        for key, value in request.POST.items():
-            if value:
-                if (isinstance(value, list) and len(value)):
-                    filtered_data.update({key: value[0]})
-                else:
-                    filtered_data.update({key: value})
-        form = forms.PaymentResponseForm(filtered_data)
+        form = forms.PaymentResponseForm(request.POST)
         if form.is_valid():
             response = form.save()
             logger.info("Django-Payzen : Transaction {} response received !"

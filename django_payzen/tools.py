@@ -81,6 +81,6 @@ def is_signature_valid(post_args):
     vads_args = [arg for arg in post_args if arg.startswith("vads_")]
     signature_str = ""
     for key in sorted(vads_args):
-        signature_str += post_args[key][0] + "+"
+        signature_str += post_args[key] + "+"
     signature_str += app_settings.VADS_CERTIFICATE
-    return hashlib.sha1(signature_str).hexdigest() == post_args["signature"][0]
+    return hashlib.sha1(signature_str).hexdigest() == post_args["signature"]

@@ -276,7 +276,8 @@ class PaymentResponse(WarrantyDetails, CustomerDetails,
     vads_version = models.CharField(max_length=2)
     vads_trans_date = models.CharField(max_length=14)
     vads_action_mode = models.CharField(
-        max_length=11, choices=constants.VADS_ACTION_MODE_CHOICES)
+        max_length=11, choices=constants.VADS_ACTION_MODE_CHOICES,
+        blank=True, null=True)
 
     vads_trans_id = models.CharField(max_length=6)
     vads_payment_config = models.TextField(
@@ -310,7 +311,8 @@ class PaymentResponse(WarrantyDetails, CustomerDetails,
     vads_card_number = models.CharField(max_length=16, blank=True, null=True)
     vads_expiry_month = models.PositiveSmallIntegerField(blank=True, null=True)
     vads_expiry_year = models.PositiveSmallIntegerField(blank=True, null=True)
-    vads_contract_used = models.CharField(max_length=250)
+    vads_contract_used = models.CharField(
+        max_length=250, blank=True, null=True)
     vads_auth_number = models.CharField(max_length=6, blank=True, null=True)
     vads_auth_result = models.CharField(max_length=2, blank=True, null=True)
     vads_auth_mode = models.CharField(

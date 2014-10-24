@@ -5,6 +5,7 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
 from . import forms
+from . import models
 from . import signals
 from . import tools
 
@@ -25,7 +26,17 @@ class ResponseView(generic.View):
         # Payzen data is checked and valid
         form = forms.PaymentResponseForm(request.POST)
         if form.is_valid():
-            response = form.save()
+            try:
+                vads_trans_id = form.cleaned_data.get("vads_trans_id")
+                vads_trans_date = form.cleaned_data.get("vads_trans_date")
+                vads_site_id = form.cleaned_data.get("vads_site_id")
+                instance = models.PaymentResponse.get(
+                    vads_trans_id=vads_trans_id,
+                    vads_trans_date=vads_trans_date,
+                    vads_site_id=vads_site_id)
+                response = form.save(instance=instance)
+            except models.PaymentResponse.DoesNotExist:
+                response = form.save()
             logger.info("Django-Payzen : Transaction {} response received !"
                         .format(response.vads_trans_id))
             if response.payment_successful:

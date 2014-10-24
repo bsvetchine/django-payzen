@@ -71,6 +71,7 @@ VADS_RESULT_CHOICES = (
     ('00', 'Payment successful'),
     ('02', 'Merchant should contact his bank'),
     ('05', 'Payment refused'),
+    ('17', 'Payment cancelled by client'),
     ('30', 'Wrong request format'),
     ('96', 'Technical error during payment process')
 )
@@ -103,6 +104,7 @@ VADS_THREEDS_STATUS_CHOICES = (
 VADS_URL_CHECK_SRC_CHOICES = (
     ('PAY', 'PAY'),
     ('BO', 'BO'),
+    ('BATCH', 'BATCH'),
     ('BATCH_AUTO', 'BATCH_AUTO'),
     ('FILE', 'FILE'),
     ('REC', 'REC'),

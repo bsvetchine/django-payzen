@@ -30,7 +30,7 @@ class ResponseView(generic.View):
                 vads_trans_id = form.cleaned_data.get("vads_trans_id")
                 vads_trans_date = form.cleaned_data.get("vads_trans_date")
                 vads_site_id = form.cleaned_data.get("vads_site_id")
-                instance = models.PaymentResponse.get(
+                instance = models.PaymentResponse.objects.get(
                     vads_trans_id=vads_trans_id,
                     vads_trans_date=vads_trans_date,
                     vads_site_id=vads_site_id)

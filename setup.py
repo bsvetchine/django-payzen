@@ -35,6 +35,7 @@ setup(
     author_email="bertrand.svetchine@gmail.com",
     url="https://github.com/bsvetchine/django-payzen",
     packages=find_packages(),
+    include_package_data=True,
     install_requires=parse_requirements(PIP_REQUIRES),
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -43,5 +44,4 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Framework :: Django", ],
-    include_package_data=True,
 )

@@ -272,7 +272,7 @@ class PaymentResponse(WarrantyDetails, CustomerDetails,
         max_length=10, choices=constants.VADS_CTX_MODE_CHOICES)
     vads_url_check_src = models.CharField(
         choices=constants.VADS_URL_CHECK_SRC_CHOICES,
-        max_length=10)
+        max_length=10, blank=True, null=True)
     vads_version = models.CharField(max_length=2)
     vads_trans_date = models.CharField(max_length=14)
     vads_action_mode = models.CharField(

@@ -83,8 +83,9 @@ class PayzenResponseTester(object):
 class BasicPaymentTest(PayzenResponseTester, LiveServerTestCase):
 
     def setUp(self):
-        self.data = data.basic_payment_args
-        self.instance = models.PaymentRequest(**self.data)
+        self.data = data.payment_args
+        self.instance = models.PaymentRequest(
+            **data.payment_args)
         self.instance.save()
         self.card = data.cards[0]
 
@@ -92,9 +93,9 @@ class BasicPaymentTest(PayzenResponseTester, LiveServerTestCase):
 class CustomizedPaymentTest(PayzenResponseTester, LiveServerTestCase):
 
     def setUp(self):
-        self.data = data.customized_payment_args
+        self.data = data.payment_args
         self.instance = models.PaymentRequest(
-            **self.data)
+            **data.payment_args)
         self.instance.theme = models.ThemeConfig(
             **data.theme_args)
         self.instance.theme.save()

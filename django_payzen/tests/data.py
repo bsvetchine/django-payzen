@@ -1,5 +1,11 @@
 import collections
 
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
+
+
+domain = Site.objects.get_current().domain
+base_url = "https://" + domain
 
 cards = [
     {
@@ -166,8 +172,6 @@ cards = [
     },
 ]
 
-base_url = "http://www.if-then-else.fr/"
-
 theme_args = collections.OrderedDict([
     ("success_footer_msg_return", "Success footer msg test"),
     ("cancel_footer_msg_return", "Cancel footer msg test"),
@@ -187,28 +191,24 @@ payment_config_args = {
     "period": 5
 }
 
-basic_payment_args = {
-    "vads_amount": "1000",
-}
-
-customized_payment_args = {
+payment_args = {
     # Base fields
     "vads_amount": "10000",
     "vads_capture_delay": "2",
     "vads_payment_cards": "CB;Visa",
     "vads_return_mode": "POST",
     "vads_validation_mode": "1",
-    "vads_url_success": base_url+"success/",
-    "vads_url_referral": base_url+"referral/",
-    "vads_url_refused": base_url+"refused/",
-    "vads_url_cancel": base_url+"cancel/",
-    "vads_url_error": base_url+"error/",
-    "vads_url_return": base_url+"return/",
+    "vads_url_success": base_url+reverse("django_payzen_response"),
+    "vads_url_referral": base_url+reverse("django_payzen_response"),
+    "vads_url_refused": base_url+reverse("django_payzen_response"),
+    "vads_url_cancel": base_url+reverse("django_payzen_response"),
+    "vads_url_error": base_url+reverse("django_payzen_response"),
+    "vads_url_return": base_url+reverse("django_payzen_response"),
     "vads_user_info": "Abbath Doom Occulta",
     "vads_shop_name": "Immortal",
-    "vads_redirect_success_timeout": "5",
+    "vads_redirect_success_timeout": "1",
     "vads_redirect_success_message": "Tragedies Blows At Horizon",
-    "vads_redirect_error_timeout": "5",
+    "vads_redirect_error_timeout": "1",
     "vads_redirect_error_message": "At The Heart Of Winter",
     # customer fields
     "vads_cust_address": "Oeschstr.",

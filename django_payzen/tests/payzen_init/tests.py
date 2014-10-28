@@ -2,7 +2,6 @@ from django import template
 from django.test import LiveServerTestCase
 
 from .. import data
-from ... import app_settings
 from ... import models
 
 from selenium.webdriver.firefox import webdriver
@@ -35,11 +34,10 @@ class PaymentInitTester(object):
         self.selenium.find_element_by_xpath('//input[@type="submit"]').click()
 
     def payzen_form_test(self):
-        self.assertEqual(
-            self.selenium.current_url,
-            app_settings.PAYZEN_REQUEST_URL)
-        self.selenium.find_element_by_class_name(
-            self.css_class_to_find)
+        self.assertTrue(
+            self.selenium.current_url.startswith("https://secure.payzen.eu"))
+        for css_class in self.css_classes_to_find:
+            self.selenium.find_element_by_class_name(css_class)
 
     def test_payment_initialization(self):
         self.generate_payment_form()
@@ -51,16 +49,17 @@ class BasicPaymentTest(PaymentInitTester, LiveServerTestCase):
 
     def setUp(self):
         self.instance = models.PaymentRequest(
-            vads_amount=1000)
+            **data.payment_args)
         self.instance.save()
-        self.css_class_to_find = "choiceMessageLabel"
+        self.css_classes_to_find = [
+            "cardNumber", "vads-expiry-date-input", "validationButton", ]
 
 
 class CustomizedPaymentTest(PaymentInitTester, LiveServerTestCase):
 
     def setUp(self):
         self.instance = models.PaymentRequest(
-            **data.customized_payment_args)
+            **data.payment_args)
         self.instance.theme = models.ThemeConfig(
             **data.theme_args)
         self.instance.theme.save()
@@ -68,4 +67,6 @@ class CustomizedPaymentTest(PaymentInitTester, LiveServerTestCase):
             **data.payment_config_args)
         self.instance.payment_config.save()
         self.instance.save()
-        self.css_class_to_find = "echeancier"
+        self.css_classes_to_find = [
+            "echeancier", "cardNumber", "vads-expiry-date-input",
+            "validationButton", ]

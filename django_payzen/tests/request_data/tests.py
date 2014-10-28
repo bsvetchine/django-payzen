@@ -52,10 +52,10 @@ class BasicPaymentTest(RequestDataTester, TestCase):
 
     def setUp(self):
         self.instance = models.PaymentRequest(
-            vads_amount=10000)
+            **data.payment_args)
         self.instance.save()
         self.expected_values = {
-            "fields_nb": 14,
+            "fields_nb": 56,
             "vads_theme_config": None,
             "vads_payment_config": "SINGLE",
             "vads_trans_id": "000001"
@@ -66,14 +66,14 @@ class CustomizedPaymentTest(RequestDataTester, TestCase):
 
     def setUp(self):
         self.instance = models.PaymentRequest(
-            vads_amount=10000)
+            **data.payment_args)
         self.instance.payment_config = models.MultiPaymentConfig(
             **data.payment_config_args)
         self.instance.payment_config.save()
         self.instance.save()
 
         self.expected_values = {
-            "fields_nb": 15,
+            "fields_nb": 57,
             "vads_theme_config": None,
             "vads_payment_config": "MULTI:first=5000;count=2;period=5",
             "vads_trans_id": "000001"
@@ -84,14 +84,14 @@ class CustomizedThemeTest(RequestDataTester, TestCase):
 
     def setUp(self):
         self.instance = models.PaymentRequest(
-            vads_amount=10000)
+            **data.payment_args)
         self.instance.theme = models.ThemeConfig(
             **data.theme_args)
         self.instance.theme.save()
         self.instance.save()
 
         self.expected_values = {
-            "fields_nb": 16,
+            "fields_nb": 58,
             "vads_theme_config": self.get_theme_string(),
             "vads_payment_config": "SINGLE",
             "vads_trans_id": "000001"
@@ -109,7 +109,7 @@ class MultiPaymentConfigTest(RequestDataTester, TestCase):
 
     def setUp(self):
         self.instance = models.PaymentRequest(
-            vads_amount=1000)
+            **data.payment_args)
         self.instance.save()
         for i in range(1, 6):
             cpc = models.CustomPaymentConfig(
@@ -120,7 +120,7 @@ class MultiPaymentConfigTest(RequestDataTester, TestCase):
         self.instance.update()
 
         self.expected_values = {
-            "fields_nb": 14,
+            "fields_nb": 56,
             "vads_theme_config": None,
             "vads_payment_config": "MULTI_EXT:20150101=200;" +
                                    "20150201=200;" +

@@ -74,7 +74,7 @@ def get_signature(payment_request):
     for key in sorted(vads_args):
         base_str += str(vads_args[key]) + '+'
     base_str += app_settings.VADS_CERTIFICATE
-    return hashlib.sha1(base_str).hexdigest()
+    return hashlib.sha1(base_str.encode("utf-8")).hexdigest()
 
 
 def is_signature_valid(post_args):
@@ -83,4 +83,5 @@ def is_signature_valid(post_args):
     for key in sorted(vads_args):
         signature_str += post_args[key] + "+"
     signature_str += app_settings.VADS_CERTIFICATE
-    return hashlib.sha1(signature_str).hexdigest() == post_args["signature"]
+    return hashlib.sha1(
+        signature_str.encode("utf-8")).hexdigest() == post_args["signature"]

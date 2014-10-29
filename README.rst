@@ -1,3 +1,7 @@
+.. image:: https://api.travis-ci.org/bsvetchine/django-payzen.svg?branch=master
+    :target: https://travis-ci.org/bsvetchine/django-payzen
+    :alt: Travis CI Status
+
 django-payzen
 =============
 

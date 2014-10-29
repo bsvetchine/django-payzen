@@ -1,0 +1,27 @@
+language: python
+python:
+  - "2.7"
+  - "3.4"
+env:
+  - DJANGO_VERSION=1.7.1
+addons:
+  sauce_connect:
+    username: "bertrandsvetchine"
+    access_key: $SAUCE_ACCESS_KEY
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+install:
+  - pip install -q Django==$DJANGO_VERSION
+  - pip install selenium
+  - pip install .
+before_script:
+  - cd ..
+  - git clone https://github.com/bsvetchine/django-payzen-tester.git
+  - cd django-payzen-tester/
+  - ./ngrok -log stdout -authtoken $NGROK_TOKEN -subdomain django-payzen 8000 > /dev/null &
+  - cd django_payzen_tester/
+script:
+  - python manage.py test django_payzen --liveserver 0.0.0.0:8000
+after_script:
+  - sudo killall ngrok

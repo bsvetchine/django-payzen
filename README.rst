@@ -1,8 +1,6 @@
-.. image:: https://travis-ci.org/FundedByMe/django-mangopay.svg?branch=master
-    :target: https://travis-ci.org/FundedByMe/django-mangopay
+.. image:: https://api.travis-ci.org/bsvetchine/django-payzen.svg?branch=master
+    :target: https://travis-ci.org/bsvetchine/django-payzen
     :alt: Travis CI Status
-|
-|
 
 django-payzen
 =============

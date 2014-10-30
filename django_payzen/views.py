@@ -21,7 +21,8 @@ class ResponseView(generic.View):
         # We check if the signature is valid. If not return
         if not tools.is_signature_valid(request.POST):
             logger.warning(
-                "Django-Payzen : Response signature detected as invalid")
+                "Django-Payzen : Response signature detected as invalid",
+                extra={"stack": True})
             return http.HttpResponse()
         # Payzen data is checked and valid
         form = forms.PaymentResponseForm(request.POST)
@@ -46,6 +47,6 @@ class ResponseView(generic.View):
             signal.send(sender=self.__class__, response=response)
         else:
             logger.error("Django-Payzen : Response could not be saved - {}"
-                         .format(form.errors))
+                         .format(form.errors), extra={"stack": True})
             signals.response_error.send(sender=self.__class__)
         return http.HttpResponse()

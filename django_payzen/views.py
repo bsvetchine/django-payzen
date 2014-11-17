@@ -47,6 +47,7 @@ class ResponseView(generic.View):
                         .format(response.vads_trans_id))
         else:
             signals.response_error.send(sender=self.__class__)
-            logger.error("Django-Payzen : Response could not be saved - {}"
-                         .format(form.errors), extra={"stack": True})
+            logger.error("Django-Payzen : Response could not be saved - {} {}"
+                         .format(form.errors, request.POST),
+                         extra={"stack": True})
         return http.HttpResponse()

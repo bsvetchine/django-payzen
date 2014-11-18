@@ -83,5 +83,5 @@ def is_signature_valid(post_args):
     for key in sorted(vads_args):
         signature_str += post_args[key] + "+"
     signature_str += app_settings.VADS_CERTIFICATE
-    return hashlib.sha1(
-        signature_str.encode("utf-8")).hexdigest() == post_args["signature"]
+    return post_args.get("signature") and (hashlib.sha1(
+        signature_str.encode("utf-8")).hexdigest() == post_args["signature"])

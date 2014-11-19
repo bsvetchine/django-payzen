@@ -196,7 +196,7 @@ payment_args = {
     "vads_amount": "10000",
     "vads_capture_delay": "2",
     "vads_payment_cards": "CB;Visa",
-    "vads_return_mode": "POST",
+    "vads_return_mode": "NONE",
     "vads_validation_mode": "1",
     "vads_url_success": base_url+reverse("django_payzen_response"),
     "vads_url_referral": base_url+reverse("django_payzen_response"),

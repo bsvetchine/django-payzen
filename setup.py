@@ -1,7 +1,10 @@
 """Setup file for easy installation"""
 import os
 import re
+
 from setuptools import setup, find_packages
+
+from cmd import TestCommand
 
 
 ROOT = os.path.dirname(__file__)
@@ -44,4 +47,5 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Framework :: Django", ],
+    cmdclass={'test': TestCommand}
 )

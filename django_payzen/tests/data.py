@@ -1,11 +1,6 @@
 import collections
 
-from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
-
-
-domain = Site.objects.get_current().domain
-base_url = "https://" + domain
+url_exemple = "http://www.google.com/"
 
 cards = [
     {
@@ -178,11 +173,11 @@ theme_args = collections.OrderedDict([
     ("secure_message", "Secure message test"),
     ("secure_message_register", "Secure message register test"),
     ("site_id_label", "Site ID label test"),
-    ("css_for_payment", base_url+"payment.css"),
-    ("css_for_payment_mobile", base_url+"mobile_payment.css"),
-    ("header_for_mail", base_url+"mail_header.html"),
-    ("footer_for_mail", base_url+"footer_mail.html"),
-    ("shop_logo", base_url+"logo.png"),
+    ("css_for_payment", url_exemple+"payment.css"),
+    ("css_for_payment_mobile", url_exemple+"mobile_payment.css"),
+    ("header_for_mail", url_exemple+"mail_header.html"),
+    ("footer_for_mail", url_exemple+"footer_mail.html"),
+    ("shop_logo", url_exemple+"logo.png"),
 ])
 
 payment_config_args = {
@@ -198,12 +193,12 @@ payment_args = {
     "vads_payment_cards": "CB;Visa",
     "vads_return_mode": "NONE",
     "vads_validation_mode": "1",
-    "vads_url_success": base_url+reverse("django_payzen_response"),
-    "vads_url_referral": base_url+reverse("django_payzen_response"),
-    "vads_url_refused": base_url+reverse("django_payzen_response"),
-    "vads_url_cancel": base_url+reverse("django_payzen_response"),
-    "vads_url_error": base_url+reverse("django_payzen_response"),
-    "vads_url_return": base_url+reverse("django_payzen_response"),
+    "vads_url_success": url_exemple,
+    "vads_url_referral": url_exemple,
+    "vads_url_refused": url_exemple,
+    "vads_url_cancel": url_exemple,
+    "vads_url_error": url_exemple,
+    "vads_url_return": url_exemple,
     "vads_user_info": "Abbath Doom Occulta",
     "vads_shop_name": "Immortal",
     "vads_redirect_success_timeout": "1",

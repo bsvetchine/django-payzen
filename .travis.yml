@@ -18,7 +18,7 @@ install:
   - pip install .
   - sudo apt-get install unzip
 before_script:
-  - wget "https://api.equinox.io/1/Applications/ap_pJSFC5wQYkAyI0FIVwKYs9h1hW/Updates/Asset/ngrok.zip?os=linux&arch=amd64&channel=stable" -0 ngrok.zip
+  - curl "https://api.equinox.io/1/Applications/ap_pJSFC5wQYkAyI0FIVwKYs9h1hW/Updates/Asset/ngrok.zip?os=linux&arch=amd64&channel=stable" -o ngrok.zip
   - unzip ngrok.zip
   - ./ngrok -log stdout -authtoken $NGROK_TOKEN -subdomain django-payzen 8000 > /dev/null &
 script:

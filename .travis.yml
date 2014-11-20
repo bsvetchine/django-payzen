@@ -16,9 +16,11 @@ install:
   - pip install -q Django==$DJANGO_VERSION
   - pip install selenium
   - pip install .
-  - sudo apt-get install ngrok-client
+  - sudo apt-get install unzip
 before_script:
-  - ngrok -log stdout -authtoken $NGROK_TOKEN -subdomain django-payzen 8000 > /dev/null &
+  - wget "https://api.equinox.io/1/Applications/ap_pJSFC5wQYkAyI0FIVwKYs9h1hW/Updates/Asset/ngrok.zip?os=linux&arch=amd64&channel=stable" -0 ngrok.zip
+  - unzip ngrok.zip
+  - ./ngrok -log stdout -authtoken $NGROK_TOKEN -subdomain django-payzen 8000 > /dev/null &
 script:
   - python setup.py test --site $VADS_SITE_ID --certificate $VADS_CERTIFICATE
 after_script:

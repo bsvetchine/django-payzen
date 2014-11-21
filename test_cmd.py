@@ -68,6 +68,7 @@ class TestCommand(Command):
         )
 
     def run(self):
+        import django
         from django.core.management import call_command
         self.configure_settings()
         django.setup()

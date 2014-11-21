@@ -1,9 +1,5 @@
 from distutils.core import Command
 
-import django
-from django.conf import settings
-from django.core.management import call_command
-
 
 class TestCommand(Command):
     description = "Launch all tests under django_payzen app"
@@ -27,6 +23,7 @@ class TestCommand(Command):
                             " --certificate option")
 
     def configure_settings(self):
+        from django.conf import settings
         settings.configure(
             DATABASES={
                 "default": {
@@ -71,6 +68,7 @@ class TestCommand(Command):
         )
 
     def run(self):
+        from django.core.management import call_command
         self.configure_settings()
         django.setup()
         call_command("test", "django_payzen", liveserver="0.0.0.0:8000")

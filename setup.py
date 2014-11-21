@@ -4,7 +4,7 @@ import re
 
 from setuptools import setup, find_packages
 
-from cmd import TestCommand
+import cmd
 
 
 ROOT = os.path.dirname(__file__)
@@ -47,5 +47,5 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Framework :: Django", ],
-    cmdclass={'test': TestCommand}
+    cmdclass={'test': cmd.TestCommand}
 )

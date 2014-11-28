@@ -4,7 +4,7 @@ import re
 
 from setuptools import setup, find_packages
 
-import test_cmd
+from tests import test_cmd
 
 
 ROOT = os.path.dirname(__file__)

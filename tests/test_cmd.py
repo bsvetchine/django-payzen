@@ -59,12 +59,17 @@ class TestCommand(Command):
                 },
                 "loggers": {
                     "django_payzen": {
-                        "handler": ["console"],
+                        "handlers": ["console"],
                         "propagate": True,
                         "level": "INFO"
                     }
                 },
             },
+            STATIC_URL = "/static/",
+            MEDIA_URL = "/media/",
+            STATIC_ROOT = "/tmp/static/",
+            MEDIA_ROOT = "/tmp/media/",
+            ROOT_URLCONF = "tests.urls",
         )
 
     def run(self):

@@ -52,5 +52,8 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# Pypi dist
+dist
+
 # Pypi configuration
 .pypirc

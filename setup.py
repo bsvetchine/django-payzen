@@ -12,7 +12,7 @@ PIP_REQUIRES = os.path.join(ROOT, "requirements.txt")
 
 setup(
     name="django-payzen",
-    version="1.0",
+    version="1.0.1",
     description="Django app to manage payments with Payzen ETP",
     license='MIT',
     author="Bertrand Svetchine",

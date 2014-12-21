@@ -32,7 +32,7 @@ def parse_requirements(*filenames):
 
 setup(
     name="django-payzen",
-    version="0.9",
+    version="1.0",
     description="Django app to manage payments with Payzen ETP",
     author="Bertrand Svetchine",
     author_email="bertrand.svetchine@gmail.com",

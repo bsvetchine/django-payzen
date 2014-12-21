@@ -54,8 +54,6 @@ setup(
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
         "Framework :: Django",
-        "Framework :: Django :: 1.6",
-        "Framework :: Django :: 1.7",
         "Topic :: Software Development"],
     cmdclass={'test': test_cmd.TestCommand}
 )

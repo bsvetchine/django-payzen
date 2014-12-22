@@ -7,7 +7,6 @@ from tests import test_cmd
 
 
 ROOT = os.path.dirname(__file__)
-PIP_REQUIRES = os.path.join(ROOT, "requirements.txt")
 
 
 setup(

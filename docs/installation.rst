@@ -5,7 +5,7 @@ Installation
 
 ::
 
-    pip install https://github.com/bsvetchine/django-payzen/archive/master.zip
+    pip install django-payzen
 
 
 2. Add django_payzen in your INSTALLED_APPS

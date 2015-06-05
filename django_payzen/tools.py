@@ -1,7 +1,14 @@
+"""Some tools."""
+
 import hashlib
+import logging
 import random
 
 from . import app_settings
+from . import forms
+from . import models
+
+logger = logging.getLogger(__name__)
 
 
 def get_vads_trans_id(vads_site_id, vads_trans_date):
@@ -85,3 +92,36 @@ def is_signature_valid(post_args):
     signature_str += app_settings.VADS_CERTIFICATE
     return post_args.get("signature") and (hashlib.sha1(
         signature_str.encode("utf-8")).hexdigest() == post_args["signature"])
+
+
+def process_response(data):
+    """Process a payment response."""
+    # We check if the signature is valid. If not return
+    if is_signature_valid(data):
+        logger.warning(
+            "Django-Payzen : Response signature detected as invalid",
+            extra={"stack": True}
+        )
+        return None
+    # The signature is valid
+    vads_trans_id = data.get("vads_trans_id")
+    vads_trans_date = data.get("vads_trans_date")
+    vads_site_id = data.get("vads_site_id")
+    try:
+        instance = models.PaymentResponse.objects.get(
+            vads_trans_id=vads_trans_id,
+            vads_trans_date=vads_trans_date,
+            vads_site_id=vads_site_id)
+        form = forms.PaymentResponseForm(data, instance=instance)
+    except models.PaymentResponse.DoesNotExist:
+        form = forms.PaymentResponseForm(data)
+    if form.is_valid():
+        response = form.save()
+        logger.info("Django-Payzen : Transaction {} response received !"
+                    .format(response.vads_trans_id))
+    else:
+        logger.error("Django-Payzen : Response could not be saved - {} {}"
+                     .format(form.errors, data),
+                     extra={"stack": True})
+        response = None
+    return response

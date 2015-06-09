@@ -95,7 +95,7 @@ def is_signature_valid(post_args):
 def process_response(data):
     """Process a payment response."""
     # We check if the signature is valid. If not return
-    if is_signature_valid(data):
+    if not is_signature_valid(data):
         logger.warning(
             "Django-Payzen : Response signature detected as invalid",
             extra={"stack": True}

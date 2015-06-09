@@ -5,7 +5,6 @@ import logging
 import random
 
 from . import app_settings
-from . import forms
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +102,7 @@ def process_response(data):
         )
         return None
 
+    from . import forms
     from . import models
 
     # The signature is valid

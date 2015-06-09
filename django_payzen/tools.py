@@ -6,7 +6,6 @@ import random
 
 from . import app_settings
 from . import forms
-from . import models
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +102,9 @@ def process_response(data):
             extra={"stack": True}
         )
         return None
+
+    from . import models
+
     # The signature is valid
     vads_trans_id = data.get("vads_trans_id")
     vads_trans_date = data.get("vads_trans_date")

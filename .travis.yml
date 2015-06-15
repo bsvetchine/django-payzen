@@ -18,9 +18,10 @@ install:
   - pip install .
   - sudo apt-get install unzip
 before_script:
-  - curl https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip
+  - wget https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip
   - unzip ngrok_2.0.19_linux_amd64.zip
-  - ./ngrok -log stdout -authtoken $NGROK_TOKEN -subdomain django-payzen 8000 > /dev/null &
+  - ./ngrok authtoken $NGROK_TOKEN
+  - ./ngrok http -subdomain=django-payzen 8000 > /dev/null &
 script:
   - python setup.py test --site $VADS_SITE_ID --certificate $VADS_CERTIFICATE
 after_script:

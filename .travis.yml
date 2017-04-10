@@ -18,7 +18,7 @@ install:
   - pip install .
   - sudo apt-get install unzip
 before_script:
-  - wget https://dl.ngrok.com/ngrok_2.0.19_linux_amd64.zip
+  - wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
   - unzip ngrok_2.0.19_linux_amd64.zip
   - ./ngrok authtoken $NGROK_TOKEN
   - ./ngrok http -subdomain=django-payzen 8000 > /dev/null &

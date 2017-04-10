@@ -3,7 +3,7 @@ from django import template
 from .. import app_settings
 from .. import forms
 
-register = template.base.Library()
+register = template.Library()
 
 
 @register.simple_tag

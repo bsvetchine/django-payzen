@@ -3,7 +3,7 @@ python:
   - "2.7"
   - "3.4"
 env:
-  - DJANGO_VERSION=1.7.1
+  - DJANGO_VERSION=1.11
 addons:
   sauce_connect:
     username: "bertrandsvetchine"
@@ -18,6 +18,11 @@ install:
   - pip install .
   - sudo apt-get install unzip
 before_script:
+  # Download and setup geckodriver
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.15.0/geckodriver-v0.15.0-linux64.tar.gz
+  - tar -xvzf geckodriver-v0.15.0-linux64.tar.gz
+  - export PATH=$PATH:/geckodriver
+  # Download and setup ngrok
   - wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
   - unzip ngrok-stable-linux-amd64.zip
   - ./ngrok authtoken $NGROK_TOKEN

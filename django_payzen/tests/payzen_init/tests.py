@@ -22,11 +22,9 @@ class PaymentInitTester(object):
     def generate_payment_form(self):
         t = template.Template(
             "{% load payzen_extras %}{% payzen_form instance %}")
-        c = template.Context({
-            "instance": self.instance
-        })
+        ctx = {"instance": self.instance}
         test = open("/tmp/payment_form_testing.html", "w")
-        test.write(t.render(c))
+        test.write(t.render(ctx))
         test.close()
 
     def payment_form_test(self):

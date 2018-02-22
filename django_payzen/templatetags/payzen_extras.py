@@ -15,7 +15,7 @@ def payzen_form(payment_request, auto_submit=False):
         template_used = "django_payzen/form.html"
     payment_request.update()
     t = template.loader.get_template(template_used)
-    return t.render(template.Context({
+    return t.render({
         "form": forms.PaymentRequestForm(instance=payment_request),
         "payzen_submit_url": app_settings.PAYZEN_REQUEST_URL
-    }))
+    })

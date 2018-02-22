@@ -26,10 +26,8 @@ class RequestDataTester(object):
     def test_payzen_form_template_tag(self):
         t = template.Template(
             "{% load payzen_extras %}{% payzen_form instance %}")
-        c = template.Context({
-            "instance": self.instance
-        })
-        response = t.render(c)
+        ctx = {"instance": self.instance}
+        response = t.render(ctx)
         self.analyze_template_tag_response(response)
 
     def test_vads_theme_config_value(self):
